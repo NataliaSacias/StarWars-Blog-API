@@ -24,61 +24,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.User = void 0;
+exports.Personaje_Favorito = void 0;
 var typeorm_1 = require("typeorm");
-// import {Planet} from "./Planet"
-var User = /** @class */ (function (_super) {
-    __extends(User, _super);
-    function User() {
+var Personaje_1 = require("./Personaje");
+var User_1 = require("./User");
+var Personaje_Favorito = /** @class */ (function (_super) {
+    __extends(Personaje_Favorito, _super);
+    function Personaje_Favorito() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], User.prototype, "id");
+    ], Personaje_Favorito.prototype, "id");
     __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "name");
+        typeorm_1.ManyToOne(function () { return Personaje_1.Personaje; }, function (personaje) { return personaje.personajes_favoritos; }),
+        __metadata("design:type", Personaje_1.Personaje)
+    ], Personaje_Favorito.prototype, "personaje");
     __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "photo");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
-    ], User.prototype, "height");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
-    ], User.prototype, "mass");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "hair");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "skin_color");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "eye_color");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "brith_year");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "gende");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], User.prototype, "homeword");
-    User = __decorate([
+        typeorm_1.ManyToOne(function () { return User_1.User; }, function (user) { return user.personajes_favoritos; }),
+        __metadata("design:type", User_1.User)
+    ], Personaje_Favorito.prototype, "user");
+    Personaje_Favorito = __decorate([
         typeorm_1.Entity()
-    ], User);
-    return User;
+    ], Personaje_Favorito);
+    return Personaje_Favorito;
 }(typeorm_1.BaseEntity));
-exports.User = User;
+exports.Personaje_Favorito = Personaje_Favorito;

@@ -38,9 +38,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsers = exports.createPersonaje = exports.createPlaneta = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
-var Users_1 = require("./entities/Users");
-var Planetas_1 = require("./entities/Planetas");
-var Personajes_1 = require("./entities/Personajes");
+var User_1 = require("./entities/User");
+var Planeta_1 = require("./entities/Planeta");
+var Personaje_1 = require("./entities/Personaje");
 var utils_1 = require("./utils");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
@@ -56,14 +56,14 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                userRepo = typeorm_1.getRepository(Users_1.Users);
+                userRepo = typeorm_1.getRepository(User_1.User);
                 return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
             case 1:
                 user = _a.sent();
                 if (user)
                     throw new utils_1.Exception("Users already exists with this email");
-                newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+                newUser = typeorm_1.getRepository(User_1.User).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).save(newUser)];
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
@@ -78,14 +78,14 @@ var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 
             case 0:
                 if (!req.body.name)
                     throw new utils_1.Exception("Please provide a first_name");
-                userRepo = typeorm_1.getRepository(Planetas_1.Planetas);
+                userRepo = typeorm_1.getRepository(Planeta_1.Planeta);
                 return [4 /*yield*/, userRepo.findOne({ where: { name: req.body.name } })];
             case 1:
                 planeta = _a.sent();
                 if (planeta)
                     throw new utils_1.Exception("Ya exite un planeta con ese nombre");
-                newPlaneta = typeorm_1.getRepository(Planetas_1.Planetas).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Planetas_1.Planetas).save(newPlaneta)];
+                newPlaneta = typeorm_1.getRepository(Planeta_1.Planeta).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Planeta_1.Planeta).save(newPlaneta)];
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
@@ -100,14 +100,14 @@ var createPersonaje = function (req, res) { return __awaiter(void 0, void 0, voi
             case 0:
                 if (!req.body.name)
                     throw new utils_1.Exception("Please provide a name");
-                personajeRepo = typeorm_1.getRepository(Personajes_1.Personajes);
+                personajeRepo = typeorm_1.getRepository(Personaje_1.Personaje);
                 return [4 /*yield*/, personajeRepo.findOne({ where: { name: req.body.name } })];
             case 1:
                 personaje = _a.sent();
                 if (personaje)
                     throw new utils_1.Exception("ya existe un personaje con ese nombre");
-                newpersonaje = typeorm_1.getRepository(Personajes_1.Personajes).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Personajes_1.Personajes).save(newpersonaje)];
+                newpersonaje = typeorm_1.getRepository(Personaje_1.Personaje).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Personaje_1.Personaje).save(newpersonaje)];
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
@@ -119,7 +119,7 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).find()];
             case 1:
                 users = _a.sent();
                 return [2 /*return*/, res.json(users)];
@@ -131,7 +131,7 @@ var getPlanetas = function (req, res) { return __awaiter(void 0, void 0, void 0,
     var planetas;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planetas_1.Planetas).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planeta_1.Planeta).find()];
             case 1:
                 planetas = _a.sent();
                 return [2 /*return*/, res.json(planetas)];
@@ -143,7 +143,7 @@ var getPersonajes = function (req, res) { return __awaiter(void 0, void 0, void 
     var personajes;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Personajes_1.Personajes).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Personaje_1.Personaje).find()];
             case 1:
                 personajes = _a.sent();
                 return [2 /*return*/, res.json(personajes)];
@@ -156,7 +156,7 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users)["delete"](req.params.id)];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](req.params.id)];
             case 1:
                 users = _a.sent();
                 return [2 /*return*/, res.json(users)];

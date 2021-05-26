@@ -3,9 +3,9 @@ import {
     BaseEntity, JoinTable
   } from 'typeorm';
   
-  // import {Planet} from "./Planet"
+  import {Personaje_Favorito} from "./Personaje_Favorito"
   @Entity()
-  export class Personajes extends BaseEntity{
+  export class Personaje extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
   
@@ -39,7 +39,9 @@ import {
     @Column()
     homeworld: string;
 
-    @OneToMany(() => Personajes_Favoritos, personajes_favoritos => personajes_favoritos.id)
+    @OneToMany(() => Personaje_Favorito, personaje_favorito => personaje_favorito.personaje)
+    personajes_favoritos: Personaje_Favorito[];
+    
     // @JoinTable()
     // planets: Planet[];
     

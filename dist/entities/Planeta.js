@@ -24,65 +24,65 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.Planetas = void 0;
+exports.Planeta = void 0;
 var typeorm_1 = require("typeorm");
-var Planetas_Favoritos_1 = require("./Planetas_Favoritos");
-var Planetas = /** @class */ (function (_super) {
-    __extends(Planetas, _super);
-    function Planetas() {
+var Planeta_Favorito_1 = require("./Planeta_Favorito");
+var Planeta = /** @class */ (function (_super) {
+    __extends(Planeta, _super);
+    function Planeta() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "id");
+    ], Planeta.prototype, "id");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planetas.prototype, "name");
+    ], Planeta.prototype, "name");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planetas.prototype, "photo");
+    ], Planeta.prototype, "photo");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "diameter");
+    ], Planeta.prototype, "diameter");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "rotation_period");
+    ], Planeta.prototype, "rotation_period");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "orbital_period");
+    ], Planeta.prototype, "orbital_period");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planetas.prototype, "gravity");
+    ], Planeta.prototype, "gravity");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "population");
+    ], Planeta.prototype, "population");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planetas.prototype, "climate");
+    ], Planeta.prototype, "climate");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planetas.prototype, "terrain");
+    ], Planeta.prototype, "terrain");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "surface_water");
+    ], Planeta.prototype, "surface_water");
     __decorate([
-        typeorm_1.OneToMany(function () { return Planetas_Favoritos_1.Planetas_Favoritos; }, function (planetas_favoritos) { return planetas_favoritos.planetas; }),
+        typeorm_1.OneToMany(function () { return Planeta_Favorito_1.Planeta_Favorito; }, function (planeta_favorito) { return planeta_favorito.planeta; }),
         __metadata("design:type", Array)
-    ], Planetas.prototype, "planetas_favoritos");
-    Planetas = __decorate([
+    ], Planeta.prototype, "planetas_favoritos");
+    Planeta = __decorate([
         typeorm_1.Entity()
-    ], Planetas);
-    return Planetas;
+    ], Planeta);
+    return Planeta;
 }(typeorm_1.BaseEntity));
-exports.Planetas = Planetas;
+exports.Planeta = Planeta;

@@ -26,7 +26,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 exports.__esModule = true;
 exports.User = void 0;
 var typeorm_1 = require("typeorm");
-var Planet_1 = require("./Planet");
+var Planeta_Favorito_1 = require("./Planeta_Favorito");
+var Personaje_Favorito_1 = require("./Personaje_Favorito");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -53,10 +54,13 @@ var User = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], User.prototype, "password");
     __decorate([
-        typeorm_1.ManyToMany(function () { return Planet_1.Planet; }),
-        typeorm_1.JoinTable(),
+        typeorm_1.OneToMany(function () { return Planeta_Favorito_1.Planeta_Favorito; }, function (planeta_favorito) { return planeta_favorito.user; }),
         __metadata("design:type", Array)
-    ], User.prototype, "planets");
+    ], User.prototype, "planetas_favoritos");
+    __decorate([
+        typeorm_1.OneToMany(function () { return Personaje_Favorito_1.Personaje_Favorito; }, function (personaje_favorito) { return personaje_favorito.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "personajes_favoritos");
     User = __decorate([
         typeorm_1.Entity()
     ], User);

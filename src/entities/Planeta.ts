@@ -3,10 +3,10 @@ import {
     BaseEntity, JoinTable
   } from 'typeorm';
   
-  import {Planetas_Favoritos} from "./Planetas_Favoritos"
+  import {Planeta_Favorito} from "./Planeta_Favorito"
 
   @Entity()
-  export class Planetas extends BaseEntity{
+  export class Planeta extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
   
@@ -43,6 +43,6 @@ import {
     // @JoinTable()
     // planets: Planet[];
     
-     @OneToMany(() => Planetas_Favoritos, planetas_favoritos => planetas_favoritos.planetas)
-    planetas_favoritos: Planetas_Favoritos[];
+     @OneToMany(() => Planeta_Favorito, planeta_favorito => planeta_favorito.planeta)
+    planetas_favoritos: Planeta_Favorito[];
   }
