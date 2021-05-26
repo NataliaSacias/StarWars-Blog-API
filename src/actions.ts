@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
 import { User } from './entities/User'
 import { Planeta } from './entities/Planeta'
+import { Planeta_Favorito } from './entities/Planeta_Favorito'
 import { Personaje } from './entities/Personaje'
 import { Exception } from './utils'
 
@@ -33,6 +34,20 @@ export const createPlaneta = async (req: Request, res:Response): Promise<Respons
 
 	const newPlaneta = getRepository(Planeta).create(req.body); 
 	const results = await getRepository(Planeta).save(newPlaneta); //Grabo el nuevo planeta
+	return res.json(results);
+}
+
+export const createPlanetaFavorito = async (req: Request, res:Response): Promise<Response> =>{
+
+    if(!req.body.planeta) throw new Exception("ingrese el id de un planeta")
+    if(!req.body.user) throw new Exception("ingrese el id de un usuario")
+
+    const userRepo = getRepository(Planeta_Favorito)
+	const planeta_favorito = await userRepo.findOne({ where: {planeta: req.body.planeta}&&{user:req.body.user}})
+	if(planeta_favorito) throw new Exception("Ya exite un planeta favorito con ese usuario")
+
+	const newPlaneta_Favorito = getRepository(Planeta_Favorito).create(req.body); 
+	const results = await getRepository(Planeta_Favorito).save(newPlaneta_Favorito); //Grabo el nuevo planeta
 	return res.json(results);
 }
 

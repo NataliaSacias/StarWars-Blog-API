@@ -36,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsers = exports.createPersonaje = exports.createPlaneta = exports.createUser = void 0;
+exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsers = exports.createPersonaje = exports.createPlanetaFavorito = exports.createPlaneta = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planeta_1 = require("./entities/Planeta");
+var Planeta_Favorito_1 = require("./entities/Planeta_Favorito");
 var Personaje_1 = require("./entities/Personaje");
 var utils_1 = require("./utils");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -93,6 +94,30 @@ var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.createPlaneta = createPlaneta;
+var createPlanetaFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, planeta_favorito, newPlaneta_Favorito, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!req.body.planeta)
+                    throw new utils_1.Exception("ingrese el id de un planeta");
+                if (!req.body.user)
+                    throw new utils_1.Exception("ingrese el id de un usuario");
+                userRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
+                return [4 /*yield*/, userRepo.findOne({ where: { planeta: req.body.planeta } && { user: req.body.user } })];
+            case 1:
+                planeta_favorito = _a.sent();
+                if (planeta_favorito)
+                    throw new utils_1.Exception("Ya exite un planeta favorito con ese usuario");
+                newPlaneta_Favorito = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito).save(newPlaneta_Favorito)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPlanetaFavorito = createPlanetaFavorito;
 var createPersonaje = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var personajeRepo, personaje, newpersonaje, results;
     return __generator(this, function (_a) {

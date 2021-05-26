@@ -19,5 +19,6 @@ import * as actions from './actions';
 const router = Router();
 
 router.get('/user', safe(actions.getUsers));
+router.post('/favoritos/planetas/', safe(actions.createPlanetaFavorito));
 
 export default router;
