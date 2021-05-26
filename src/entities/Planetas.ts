@@ -25,10 +25,10 @@ import {
     orbital_period: number;
     
     @Column()
-    gravity: number;
+    gravity: string;
     
     @Column()
-    pupulation: number;
+    population: number;
     
     @Column()
     climate: string;

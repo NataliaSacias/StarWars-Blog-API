@@ -58,12 +58,12 @@ var Planetas = /** @class */ (function (_super) {
     ], Planetas.prototype, "orbital_period");
     __decorate([
         typeorm_1.Column(),
-        __metadata("design:type", Number)
+        __metadata("design:type", String)
     ], Planetas.prototype, "gravity");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planetas.prototype, "pupulation");
+    ], Planetas.prototype, "population");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
