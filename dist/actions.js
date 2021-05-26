@@ -36,9 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.deleteUser = exports.getUsers = exports.createUser = void 0;
+exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsers = exports.createPersonaje = exports.createPlaneta = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
+var Planetas_1 = require("./entities/Planetas");
+var Personajes_1 = require("./entities/Personajes");
 var utils_1 = require("./utils");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
@@ -69,6 +71,64 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, newUser, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
+                if (!req.body.first_name)
+                    throw new utils_1.Exception("Please provide a first_name");
+                if (!req.body.last_name)
+                    throw new utils_1.Exception("Please provide a last_name");
+                if (!req.body.email)
+                    throw new utils_1.Exception("Please provide an email");
+                if (!req.body.password)
+                    throw new utils_1.Exception("Please provide a password");
+                userRepo = typeorm_1.getRepository(Users_1.Users);
+                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
+            case 1:
+                user = _a.sent();
+                if (user)
+                    throw new utils_1.Exception("Users already exists with this email");
+                newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPlaneta = createPlaneta;
+var createPersonaje = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, newUser, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
+                if (!req.body.first_name)
+                    throw new utils_1.Exception("Please provide a first_name");
+                if (!req.body.last_name)
+                    throw new utils_1.Exception("Please provide a last_name");
+                if (!req.body.email)
+                    throw new utils_1.Exception("Please provide an email");
+                if (!req.body.password)
+                    throw new utils_1.Exception("Please provide a password");
+                userRepo = typeorm_1.getRepository(Users_1.Users);
+                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
+            case 1:
+                user = _a.sent();
+                if (user)
+                    throw new utils_1.Exception("Users already exists with this email");
+                newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPersonaje = createPersonaje;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -81,6 +141,30 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+var getPlanetas = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetas;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planetas_1.Planetas).find()];
+            case 1:
+                planetas = _a.sent();
+                return [2 /*return*/, res.json(planetas)];
+        }
+    });
+}); };
+exports.getPlanetas = getPlanetas;
+var getPersonajes = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var personajes;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Personajes_1.Personajes).find()];
+            case 1:
+                personajes = _a.sent();
+                return [2 /*return*/, res.json(personajes)];
+        }
+    });
+}); };
+exports.getPersonajes = getPersonajes;
 // ELIMINAR UN USUARIO
 var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
