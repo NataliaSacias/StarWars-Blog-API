@@ -55,7 +55,7 @@ var Personajes = /** @class */ (function (_super) {
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Personajes.prototype, "hair");
+    ], Personajes.prototype, "hair_color");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
@@ -67,15 +67,22 @@ var Personajes = /** @class */ (function (_super) {
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Personajes.prototype, "brith_year");
+    ], Personajes.prototype, "birth_year");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Personajes.prototype, "gende");
+    ], Personajes.prototype, "gender");
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Personajes.prototype, "homeword");
+    ], Personajes.prototype, "homeworld");
+    __decorate([
+        typeorm_1.OneToMany(function () { return Personajes_Favoritos; }, function (personajes_favoritos) { return personajes_favoritos.id; })
+        // @JoinTable()
+        // planets: Planet[];
+        ,
+        __metadata("design:type", Object)
+    ], Personajes.prototype, "");
     Personajes = __decorate([
         typeorm_1.Entity()
     ], Personajes);

@@ -25,14 +25,9 @@ export const createUser = async (req: Request, res:Response): Promise<Response> 
 
 export const createPlaneta = async (req: Request, res:Response): Promise<Response> =>{
 
-	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
 	if(!req.body.name) throw new Exception("Please provide a first_name")
-	// if(!req.body.last_name) throw new Exception("Please provide a last_name")
-	// if(!req.body.email) throw new Exception("Please provide an email")
-	// if(!req.body.password) throw new Exception("Please provide a password")
 
 	const userRepo = getRepository(Planetas)
-	// fetch for any user with this email
 	const planeta = await userRepo.findOne({ where: {name: req.body.name }})
 	if(planeta) throw new Exception("Ya exite un planeta con ese nombre")
 
@@ -43,19 +38,15 @@ export const createPlaneta = async (req: Request, res:Response): Promise<Respons
 
 export const createPersonaje = async (req: Request, res:Response): Promise<Response> =>{
 
-	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
-	if(!req.body.first_name) throw new Exception("Please provide a first_name")
-	if(!req.body.last_name) throw new Exception("Please provide a last_name")
-	if(!req.body.email) throw new Exception("Please provide an email")
-	if(!req.body.password) throw new Exception("Please provide a password")
+	if(!req.body.name) throw new Exception("Please provide a name")
 
-	const userRepo = getRepository(Users)
+	const personajeRepo = getRepository(Personajes)
 	// fetch for any user with this email
-	const user = await userRepo.findOne({ where: {email: req.body.email }})
-	if(user) throw new Exception("Users already exists with this email")
+	const personaje = await personajeRepo.findOne({ where: {name: req.body.name }})
+	if(personaje) throw new Exception("ya existe un personaje con ese nombre")
 
-	const newUser = getRepository(Users).create(req.body);  //Creo un usuario
-	const results = await getRepository(Users).save(newUser); //Grabo el nuevo usuario 
+	const newpersonaje = getRepository(Personajes).create(req.body);  //Creo un personaje
+	const results = await getRepository(Personajes).save(newpersonaje); //Grabo el nuevo personaje
 	return res.json(results);
 }
 

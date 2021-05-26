@@ -76,7 +76,6 @@ var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
                 if (!req.body.name)
                     throw new utils_1.Exception("Please provide a first_name");
                 userRepo = typeorm_1.getRepository(Planetas_1.Planetas);
@@ -95,27 +94,20 @@ var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 
 }); };
 exports.createPlaneta = createPlaneta;
 var createPersonaje = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepo, user, newUser, results;
+    var personajeRepo, personaje, newpersonaje, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
-                if (!req.body.first_name)
-                    throw new utils_1.Exception("Please provide a first_name");
-                if (!req.body.last_name)
-                    throw new utils_1.Exception("Please provide a last_name");
-                if (!req.body.email)
-                    throw new utils_1.Exception("Please provide an email");
-                if (!req.body.password)
-                    throw new utils_1.Exception("Please provide a password");
-                userRepo = typeorm_1.getRepository(Users_1.Users);
-                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
+                if (!req.body.name)
+                    throw new utils_1.Exception("Please provide a name");
+                personajeRepo = typeorm_1.getRepository(Personajes_1.Personajes);
+                return [4 /*yield*/, personajeRepo.findOne({ where: { name: req.body.name } })];
             case 1:
-                user = _a.sent();
-                if (user)
-                    throw new utils_1.Exception("Users already exists with this email");
-                newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+                personaje = _a.sent();
+                if (personaje)
+                    throw new utils_1.Exception("ya existe un personaje con ese nombre");
+                newpersonaje = typeorm_1.getRepository(Personajes_1.Personajes).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Personajes_1.Personajes).save(newpersonaje)];
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];

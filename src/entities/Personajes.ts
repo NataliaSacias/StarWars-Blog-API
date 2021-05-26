@@ -1,5 +1,5 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, ManyToMany, 
+    Entity, Column, PrimaryGeneratedColumn, OneToMany, 
     BaseEntity, JoinTable
   } from 'typeorm';
   
@@ -22,7 +22,7 @@ import {
     mass: number;
     
     @Column()
-    hair: string;
+    hair_color: string;
     
     @Column()
     skin_color: string;
@@ -31,15 +31,15 @@ import {
     eye_color: string;
 
     @Column()
-    brith_year: string;
+    birth_year: string;
 
     @Column()
-    gende: string;
+    gender: string;
 
     @Column()
-    homeword: string;
+    homeworld: string;
 
-    // @ManyToMany(() => Planet)
+    @OneToMany(() => Personajes_Favoritos, personajes_favoritos => personajes_favoritos.id)
     // @JoinTable()
     // planets: Planet[];
     
