@@ -33,11 +33,11 @@ var utils_1 = require("./utils");
 var actions = __importStar(require("./actions"));
 var router = express_1.Router();
 // signup route, creates a new user in the DB
+router.post('/login', utils_1.safe(actions.login));
 router.post('/user', utils_1.safe(actions.createUser));
 router.post('/planetas', utils_1.safe(actions.createPlaneta));
 router.post('/personajes', utils_1.safe(actions.createPersonaje));
 router.get('/planetas', utils_1.safe(actions.getPlanetas));
 router.get('/personajes', utils_1.safe(actions.getPersonajes));
 router["delete"]('/user/:id', utils_1.safe(actions.deleteUser));
-router.post('/login', utils_1.safe(actions.login));
 exports["default"] = router;

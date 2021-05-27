@@ -139,9 +139,33 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
     const users = await getRepository(User).delete(req.params.id);
     return res.json(users);
 }
+
+// ELIMIAR UN PLANETA FAVORITO
+
+export const deletePlanetaFavorito = async (req: Request, res: Response): Promise<Response> =>{
+    const user = await getRepository(User).findOne(req.userId)
+    const planeta = await getRepository(Planeta).findOne({ where: {id: req.body.planeta}})
+    
+    const planetaFavoritoRepo = getRepository(Planeta_Favorito)
+    const planeta_favorito = await planetaFavoritoRepo.findOne({ where: {planeta: planeta, user: user}})
+
+        if(!planeta_favorito) throw new Exception("el favorito no exite")
+
+
+    const results = await getRepository(Planeta_Favorito).delete(planeta_favorito.id);
+    return res.json(results);
+}
+
+// ELIMINAR UN PERSONAJE FAVORITO
+
+export const deletePesonajeFavorito = async (req: Request, res: Response): Promise<Response> =>{
+    const users = await getRepository(User).delete(req.params.id);
+    return res.json(users);
+}
+
 //buscar usuario y planeta o personajes, con esos 2 datos buscar el favorito
 
-// TOKEN
+// ********************** TOKEN **********************
 
 export const login = async (req: Request, res: Response): Promise<Response> =>{
 		

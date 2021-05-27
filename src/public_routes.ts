@@ -17,6 +17,7 @@ import * as actions from './actions';
 const router = Router();
 
 // signup route, creates a new user in the DB
+router.post('/login', safe(actions.login));
 router.post('/user', safe(actions.createUser));
 router.post('/planetas', safe(actions.createPlaneta));
 router.post('/personajes', safe(actions.createPersonaje));
@@ -24,8 +25,6 @@ router.post('/personajes', safe(actions.createPersonaje));
 router.get('/planetas', safe(actions.getPlanetas));
 router.get('/personajes', safe(actions.getPersonajes));
 
-
 router.delete('/user/:id', safe(actions.deleteUser));
-router.post('/login', safe(actions.login));
 
 export default router;

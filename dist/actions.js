@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.login = exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsersFavoritos = exports.getUsers = exports.createPersonajeFavorito = exports.createPersonaje = exports.createPlanetaFavorito = exports.createPlaneta = exports.createUser = void 0;
+exports.login = exports.deletePesonajeFavorito = exports.deletePlanetaFavorito = exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsersFavoritos = exports.getUsers = exports.createPersonajeFavorito = exports.createPersonaje = exports.createPlanetaFavorito = exports.createPlaneta = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planeta_1 = require("./entities/Planeta");
@@ -270,8 +270,46 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.deleteUser = deleteUser;
+// ELIMIAR UN PLANETA FAVORITO
+var deletePlanetaFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, planeta, planetaFavoritoRepo, planeta_favorito, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne(req.userId)];
+            case 1:
+                user = _a.sent();
+                return [4 /*yield*/, typeorm_1.getRepository(Planeta_1.Planeta).findOne({ where: { id: req.body.planeta } })];
+            case 2:
+                planeta = _a.sent();
+                planetaFavoritoRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
+                return [4 /*yield*/, planetaFavoritoRepo.findOne({ where: { planeta: planeta, user: user } })];
+            case 3:
+                planeta_favorito = _a.sent();
+                if (!planeta_favorito)
+                    throw new utils_1.Exception("el favorito no exite");
+                return [4 /*yield*/, typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito)["delete"](planeta_favorito.id)];
+            case 4:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.deletePlanetaFavorito = deletePlanetaFavorito;
+// ELIMINAR UN PERSONAJE FAVORITO
+var deletePesonajeFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var users;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](req.params.id)];
+            case 1:
+                users = _a.sent();
+                return [2 /*return*/, res.json(users)];
+        }
+    });
+}); };
+exports.deletePesonajeFavorito = deletePesonajeFavorito;
 //buscar usuario y planeta o personajes, con esos 2 datos buscar el favorito
-// TOKEN
+// ********************** TOKEN **********************
 var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, token;
     return __generator(this, function (_a) {
