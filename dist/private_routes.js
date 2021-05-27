@@ -60,4 +60,5 @@ var verifyToken = function (req, res, next) {
 router.get('/user', verifyToken, utils_1.safe(actions.getUsers));
 router.get('/user/favoritos', verifyToken, utils_1.safe(actions.getUsersFavoritos));
 router.post('/favoritos/planetas/', verifyToken, utils_1.safe(actions.createPlanetaFavorito));
+router.post('/favoritos/personajes/', verifyToken, utils_1.safe(actions.createPersonajeFavorito));
 exports["default"] = router;

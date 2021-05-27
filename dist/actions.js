@@ -39,11 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.login = exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsersFavoritos = exports.getUsers = exports.createPersonaje = exports.createPlanetaFavorito = exports.createPlaneta = exports.createUser = void 0;
+exports.login = exports.deleteUser = exports.getPersonajes = exports.getPlanetas = exports.getUsersFavoritos = exports.getUsers = exports.createPersonajeFavorito = exports.createPersonaje = exports.createPlanetaFavorito = exports.createPlaneta = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planeta_1 = require("./entities/Planeta");
 var Planeta_Favorito_1 = require("./entities/Planeta_Favorito");
+var Personaje_Favorito_1 = require("./entities/Personaje_Favorito");
 var Personaje_1 = require("./entities/Personaje");
 var utils_1 = require("./utils");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -99,23 +100,37 @@ var createPlaneta = function (req, res) { return __awaiter(void 0, void 0, void 
 }); };
 exports.createPlaneta = createPlaneta;
 var createPlanetaFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepo, planeta_favorito, newPlaneta_Favorito, results;
+    var planetaFavoritoRepo, planeta_favorito, usuarioRepo, usuario, planetaRepo, planeta, favorito, newPlaneta_Favorito, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                console.log(req.userId);
                 if (!req.body.planeta)
                     throw new utils_1.Exception("ingrese el id de un planeta");
-                if (!req.body.user)
-                    throw new utils_1.Exception("ingrese el id de un usuario");
-                userRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
-                return [4 /*yield*/, userRepo.findOne({ where: { planeta: req.body.planeta } && { user: req.body.user } })];
+                planetaFavoritoRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
+                return [4 /*yield*/, planetaFavoritoRepo.findOne({ where: { planeta: req.body.planeta, user: req.userId } })];
             case 1:
                 planeta_favorito = _a.sent();
+                usuarioRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, usuarioRepo.findOne({ where: { id: req.userId } })];
+            case 2:
+                usuario = _a.sent();
+                planetaRepo = typeorm_1.getRepository(Planeta_1.Planeta);
+                return [4 /*yield*/, planetaRepo.findOne({ where: { id: req.body.planeta } })];
+            case 3:
+                planeta = _a.sent();
                 if (planeta_favorito)
                     throw new utils_1.Exception("Ya exite un planeta con ese usuario en favoritos");
-                newPlaneta_Favorito = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito).create(req.body);
+                if (!usuario)
+                    throw new utils_1.Exception("No existe usuario");
+                if (!planeta)
+                    throw new utils_1.Exception("No existe usuario");
+                favorito = new Planeta_Favorito_1.Planeta_Favorito();
+                favorito.user = usuario;
+                favorito.planeta = planeta;
+                newPlaneta_Favorito = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito).create(favorito);
                 return [4 /*yield*/, typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito).save(newPlaneta_Favorito)];
-            case 2:
+            case 4:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
         }
@@ -144,6 +159,43 @@ var createPersonaje = function (req, res) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.createPersonaje = createPersonaje;
+var createPersonajeFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var personajeFavoritoRepo, personaje_favorito, usuarioRepo, usuario, personajeRepo, personaje, favorito, newPersonaje_Favorito, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!req.body.personaje)
+                    throw new utils_1.Exception("ingrese el id de un personaje");
+                personajeFavoritoRepo = typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito);
+                return [4 /*yield*/, personajeFavoritoRepo.findOne({ where: { personaje: req.body.personaje, user: req.userId } })];
+            case 1:
+                personaje_favorito = _a.sent();
+                usuarioRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, usuarioRepo.findOne({ where: { id: req.userId } })];
+            case 2:
+                usuario = _a.sent();
+                personajeRepo = typeorm_1.getRepository(Personaje_1.Personaje);
+                return [4 /*yield*/, personajeRepo.findOne({ where: { id: req.body.personaje } })];
+            case 3:
+                personaje = _a.sent();
+                if (personaje_favorito)
+                    throw new utils_1.Exception("Ya exite un personaje con ese usuario en favoritos");
+                if (!usuario)
+                    throw new utils_1.Exception("No existe usuario");
+                if (!personaje)
+                    throw new utils_1.Exception("No existe pesonaje");
+                favorito = new Personaje_Favorito_1.Personaje_Favorito();
+                favorito.user = usuario;
+                favorito.personaje = personaje;
+                newPersonaje_Favorito = typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito).create(favorito);
+                return [4 /*yield*/, typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito).save(newPersonaje_Favorito)];
+            case 4:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPersonajeFavorito = createPersonajeFavorito;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -157,13 +209,26 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
 }); };
 exports.getUsers = getUsers;
 var getUsersFavoritos = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var usuarioRepo, usuario, planetasFavRepo, planetasFavoritos, personajesFavRepo, personajesFavoritos;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).find()];
+            case 0:
+                usuarioRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, usuarioRepo.findOne({ where: { id: req.userId } })];
             case 1:
-                users = _a.sent();
-                return [2 /*return*/, res.json(users)];
+                usuario = _a.sent();
+                planetasFavRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
+                return [4 /*yield*/, planetasFavRepo.find({ where: { user: usuario }, relations: ['planeta'] })];
+            case 2:
+                planetasFavoritos = _a.sent();
+                personajesFavRepo = typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito);
+                return [4 /*yield*/, personajesFavRepo.find({ where: { user: usuario }, relations: ['personaje'] })
+                    // const users = await getRepository(User).find();
+                ];
+            case 3:
+                personajesFavoritos = _a.sent();
+                // const users = await getRepository(User).find();
+                return [2 /*return*/, res.json({ planetasFavoritos: planetasFavoritos, personajesFavoritos: personajesFavoritos })];
         }
     });
 }); };
@@ -205,6 +270,7 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.deleteUser = deleteUser;
+//buscar usuario y planeta o personajes, con esos 2 datos buscar el favorito
 // TOKEN
 var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, token;

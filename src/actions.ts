@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de l
 import { User } from './entities/User'
 import { Planeta } from './entities/Planeta'
 import { Planeta_Favorito } from './entities/Planeta_Favorito'
+import { Personaje_Favorito } from './entities/Personaje_Favorito'
 import { Personaje } from './entities/Personaje'
 import { Exception } from './utils'
 import jwt from "jsonwebtoken"
@@ -39,15 +40,27 @@ export const createPlaneta = async (req: Request, res:Response): Promise<Respons
 }
 
 export const createPlanetaFavorito = async (req: Request, res:Response): Promise<Response> =>{
-
+    console.log(req.userId);
+    
     if(!req.body.planeta) throw new Exception("ingrese el id de un planeta")
-    if(!req.body.user) throw new Exception("ingrese el id de un usuario")
+    // if(!req.body.user) throw new Exception("ingrese el id de un usuario")
 
-    const userRepo = getRepository(Planeta_Favorito)
-	const planeta_favorito = await userRepo.findOne({ where: {planeta: req.body.planeta}&&{user:req.body.user}})
-	if(planeta_favorito) throw new Exception("Ya exite un planeta con ese usuario en favoritos")
+    const planetaFavoritoRepo = getRepository(Planeta_Favorito)
+    const planeta_favorito = await planetaFavoritoRepo.findOne({ where: {planeta: req.body.planeta,user:req.userId}})
+    
+    const usuarioRepo = getRepository(User)
+    const usuario = await usuarioRepo.findOne({ where: {id:req.userId}})
+    const planetaRepo = getRepository(Planeta)
+    const planeta = await planetaRepo.findOne({ where: {id:req.body.planeta}})
 
-	const newPlaneta_Favorito = getRepository(Planeta_Favorito).create(req.body); 
+    if(planeta_favorito) throw new Exception("Ya exite un planeta con ese usuario en favoritos")
+    if(!usuario) throw new Exception("No existe usuario");
+    if(!planeta) throw new Exception("No existe usuario");
+    const favorito = new Planeta_Favorito();
+    favorito.user = usuario
+    favorito.planeta = planeta
+
+	const newPlaneta_Favorito = getRepository(Planeta_Favorito).create(favorito); 
 	const results = await getRepository(Planeta_Favorito).save(newPlaneta_Favorito); //Grabo el nuevo planeta
 	return res.json(results);
 }
@@ -66,14 +79,47 @@ export const createPersonaje = async (req: Request, res:Response): Promise<Respo
 	return res.json(results);
 }
 
+export const createPersonajeFavorito = async (req: Request, res:Response): Promise<Response> =>{
+    
+    if(!req.body.personaje) throw new Exception("ingrese el id de un personaje")
+    // if(!req.body.user) throw new Exception("ingrese el id de un usuario")
+
+    const personajeFavoritoRepo = getRepository(Personaje_Favorito)
+    const personaje_favorito = await personajeFavoritoRepo.findOne({ where: {personaje: req.body.personaje,user:req.userId}})
+    
+    const usuarioRepo = getRepository(User)
+    const usuario = await usuarioRepo.findOne({ where: {id:req.userId}})
+    const personajeRepo = getRepository(Personaje)
+    const personaje = await personajeRepo.findOne({ where: {id:req.body.personaje}})
+
+    if(personaje_favorito) throw new Exception("Ya exite un personaje con ese usuario en favoritos")
+    if(!usuario) throw new Exception("No existe usuario");
+    if(!personaje) throw new Exception("No existe pesonaje");
+    const favorito = new Personaje_Favorito();
+    favorito.user = usuario
+    favorito.personaje = personaje
+
+	const newPersonaje_Favorito = getRepository(Personaje_Favorito).create(favorito); 
+	const results = await getRepository(Personaje_Favorito).save(newPersonaje_Favorito); //Grabo el nuevo personaje favorito
+	return res.json(results);
+}
+
 export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
 		const users = await getRepository(User).find();
 		return res.json(users);
 }
 
 export const getUsersFavoritos = async (req: Request, res: Response): Promise<Response> =>{
-		const users = await getRepository(User).find();
-		return res.json(users);
+        const usuarioRepo = getRepository(User)
+        const usuario = await usuarioRepo.findOne({ where: {id:req.userId}})
+
+        const planetasFavRepo = getRepository(Planeta_Favorito)
+        const planetasFavoritos = await planetasFavRepo.find({ where: {user:usuario},relations: ['planeta']})
+
+        const personajesFavRepo = getRepository(Personaje_Favorito)
+        const personajesFavoritos = await personajesFavRepo.find({ where: {user:usuario},relations: ['personaje']})
+		// const users = await getRepository(User).find();
+		return res.json({planetasFavoritos,personajesFavoritos});
 }
 
 
@@ -93,6 +139,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
     const users = await getRepository(User).delete(req.params.id);
     return res.json(users);
 }
+//buscar usuario y planeta o personajes, con esos 2 datos buscar el favorito
 
 // TOKEN
 
