@@ -272,23 +272,18 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 exports.deleteUser = deleteUser;
 // ELIMIAR UN PLANETA FAVORITO
 var deletePlanetaFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, planeta, planetaFavoritoRepo, planeta_favorito, results;
+    var planetaFavoritoRepo, planeta_favorito, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne(req.userId)];
-            case 1:
-                user = _a.sent();
-                return [4 /*yield*/, typeorm_1.getRepository(Planeta_1.Planeta).findOne({ where: { id: req.body.planeta } })];
-            case 2:
-                planeta = _a.sent();
+            case 0:
                 planetaFavoritoRepo = typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito);
-                return [4 /*yield*/, planetaFavoritoRepo.findOne({ where: { planeta: planeta, user: user } })];
-            case 3:
+                return [4 /*yield*/, planetaFavoritoRepo.findOne({ where: { planeta: req.body.planeta, user: req.userId } })];
+            case 1:
                 planeta_favorito = _a.sent();
                 if (!planeta_favorito)
                     throw new utils_1.Exception("el favorito no exite");
-                return [4 /*yield*/, typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito)["delete"](planeta_favorito.id)];
-            case 4:
+                return [4 /*yield*/, typeorm_1.getRepository(Planeta_Favorito_1.Planeta_Favorito)["delete"](planeta_favorito)];
+            case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
         }
@@ -297,13 +292,25 @@ var deletePlanetaFavorito = function (req, res) { return __awaiter(void 0, void 
 exports.deletePlanetaFavorito = deletePlanetaFavorito;
 // ELIMINAR UN PERSONAJE FAVORITO
 var deletePesonajeFavorito = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var user, personaje, personajeFavoritoRepo, personaje_favorito, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](req.params.id)];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne(req.userId)];
             case 1:
-                users = _a.sent();
-                return [2 /*return*/, res.json(users)];
+                user = _a.sent();
+                return [4 /*yield*/, typeorm_1.getRepository(Personaje_1.Personaje).findOne({ where: { id: req.body.personaje } })];
+            case 2:
+                personaje = _a.sent();
+                personajeFavoritoRepo = typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito);
+                return [4 /*yield*/, personajeFavoritoRepo.findOne({ where: { personaje: personaje, user: user } })];
+            case 3:
+                personaje_favorito = _a.sent();
+                if (!personaje_favorito)
+                    throw new utils_1.Exception("el favorito no exite");
+                return [4 /*yield*/, typeorm_1.getRepository(Personaje_Favorito_1.Personaje_Favorito)["delete"](personaje_favorito.id)];
+            case 4:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
         }
     });
 }); };
