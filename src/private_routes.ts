@@ -11,14 +11,48 @@
  * 
  */
 
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { safe } from './utils';
 import * as actions from './actions';
+import jwt from "jsonwebtoken"
+
 
 // declare a new router to include all the endpoints
 const router = Router();
 
-router.get('/user', safe(actions.getUsers));
-router.post('/favoritos/planetas/', safe(actions.createPlanetaFavorito));
+export interface IPayload {
+    user: {
+        id: number,
+        first_name: string,
+        last_name: string,
+        email: string,
+        password: string
+    }
+    iat: number;
+    exp: number
+}
+
+
+//middleware de verificación
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+    //headers con el token
+    const token = req.header('Authorization');
+    if (!token) return res.status(400).json('ACCESS DENIED');
+    try {
+        const decoded = jwt.verify(token as string, process.env.JWT_KEY as string) as IPayload
+        console.log(decoded)
+        //req.user = decoded;
+        req.userId = decoded.user.id
+        next()
+    } catch (error) {
+        return res.status(400).json('ACCESS DENIED');
+    }
+
+
+}
+
+router.get('/user',verifyToken, safe(actions.getUsers));
+router.get('/user/favoritos',verifyToken, safe(actions.getUsersFavoritos));
+router.post('/favoritos/planetas/',verifyToken, safe(actions.createPlanetaFavorito));
 
 export default router;

@@ -5,6 +5,7 @@ import { Planeta } from './entities/Planeta'
 import { Planeta_Favorito } from './entities/Planeta_Favorito'
 import { Personaje } from './entities/Personaje'
 import { Exception } from './utils'
+import jwt from "jsonwebtoken"
 
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
 
@@ -44,7 +45,7 @@ export const createPlanetaFavorito = async (req: Request, res:Response): Promise
 
     const userRepo = getRepository(Planeta_Favorito)
 	const planeta_favorito = await userRepo.findOne({ where: {planeta: req.body.planeta}&&{user:req.body.user}})
-	if(planeta_favorito) throw new Exception("Ya exite un planeta favorito con ese usuario")
+	if(planeta_favorito) throw new Exception("Ya exite un planeta con ese usuario en favoritos")
 
 	const newPlaneta_Favorito = getRepository(Planeta_Favorito).create(req.body); 
 	const results = await getRepository(Planeta_Favorito).save(newPlaneta_Favorito); //Grabo el nuevo planeta
@@ -70,6 +71,12 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
 		return res.json(users);
 }
 
+export const getUsersFavoritos = async (req: Request, res: Response): Promise<Response> =>{
+		const users = await getRepository(User).find();
+		return res.json(users);
+}
+
+
 export const getPlanetas = async (req: Request, res: Response): Promise<Response> =>{
 		const planetas = await getRepository(Planeta).find();
 		return res.json(planetas);
@@ -85,4 +92,24 @@ export const getPersonajes = async (req: Request, res: Response): Promise<Respon
 export const deleteUser = async (req: Request, res: Response): Promise<Response> =>{
     const users = await getRepository(User).delete(req.params.id);
     return res.json(users);
+}
+
+// TOKEN
+
+export const login = async (req: Request, res: Response): Promise<Response> =>{
+		
+	if(!req.body.email) throw new Exception("Please specify an email on your request body", 400)
+	if(!req.body.password) throw new Exception("Please specify a password on your request body", 400)
+
+	const userRepo = await getRepository(User)
+
+	// We need to validate that a user with this email and password exists in the DB
+	const user = await userRepo.findOne({ where: { email: req.body.email, password: req.body.password }})
+	if(!user) throw new Exception("Invalid email or password", 401)
+
+	// this is the most important line in this function, it create a JWT token
+	const token = jwt.sign({ user }, process.env.JWT_KEY as string);
+	
+	// return the user and the recently created token to the client
+	return res.json({ user, token });
 }

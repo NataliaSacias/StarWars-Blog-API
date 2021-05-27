@@ -13,6 +13,7 @@ import { safe } from './utils';
 import * as actions from './actions';
 
 
+
 const router = Router();
 
 // signup route, creates a new user in the DB
@@ -25,6 +26,6 @@ router.get('/personajes', safe(actions.getPersonajes));
 
 
 router.delete('/user/:id', safe(actions.deleteUser));
-
+router.post('/login', safe(actions.login));
 
 export default router;
